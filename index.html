@@ -437,7 +437,6 @@ color:  #05445E;
     d3.select(wordCloudContainer).select("svg").selectAll("text").remove();
 
     industry_words = calculate_words(data);
-    console.log("words0", industry_words[0])
     fontSizeScale=define_fontSizeScale(industry_words);   
 
       var layout = d3.layout.cloud()
@@ -501,7 +500,6 @@ function define_fontSizeScale(words)
 function draw_words() { 
          // Compute the maximum and minimum values for font size 
         // console.log("words", words)
-console.log("words2", industry_words[0])
 fontSizeScale=define_fontSizeScale(industry_words);  
               
 
