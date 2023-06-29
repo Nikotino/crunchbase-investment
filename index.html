@@ -443,7 +443,9 @@ color:  #05445E;
             .size([containerWidth * 0.9, containerHeight ])
             .words(industry_words)
             .padding(5)
-            .rotate(function() { return ~~(Math.random() * 2) * 90; })
+            .rotate(function(d) {
+    return (fontSizeScale(d.size) > 48) ? 0 : ~~(Math.random() * 2) * 90;
+  })
             .fontSize(function(d) { return fontSizeScale(d.size); })
             .on("end", draw_words);
 
