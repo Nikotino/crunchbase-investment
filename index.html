@@ -367,8 +367,8 @@ color:  #05445E;
    var containerWidth = wordCloudContainer.offsetWidth;
     var containerHeight = wordCloudContainer.offsetHeight;
 
-   var maxFontSize = 60;
-    var minFontSize = 6;
+   var maxFontSize = 56;
+    var minFontSize = 4;
 
     var industries;
 
@@ -430,30 +430,35 @@ color:  #05445E;
     });
 
     // Generate the word cloud chart   
-    var words; 
-   function generateWordCloud(data) {
+    var industry_words; 
+    var fontSizeScale;
+   function generateWordCloud(data) {    
 
-    words = calculate_words(data);
-    var fontSizeScale=define_fontSizeScale(words);
+    d3.select(wordCloudContainer).select("svg").selectAll("text").remove();
 
-    var layout = d3.layout.cloud()
-          .size([containerWidth * 0.9, containerHeight ])
-          .words(words)
-          .padding(5)
-          .rotate(function() { return ~~(Math.random() * 2) * 90; })
-           .fontSize(function(d) { return fontSizeScale(d.size); })
-          .on("end", draw);
+    industry_words = calculate_words(data);
+    console.log("words0", industry_words[0])
+    fontSizeScale=define_fontSizeScale(industry_words);   
 
-        // Generate the word cloud
-        layout.start();
+      var layout = d3.layout.cloud()
+            .size([containerWidth * 0.9, containerHeight ])
+            .words(industry_words)
+            .padding(5)
+            .rotate(function() { return ~~(Math.random() * 2) * 90; })
+            .fontSize(function(d) { return fontSizeScale(d.size); })
+            .on("end", draw_words);
 
+          // Generate the word cloud
+          layout.start();     
+
+          console.log("words1", industry_words[0])   
       // Initial call to update the word cloud and show investments
-      draw(words);
       showInvestments(selectedYear,'');
     }
 
 
     function calculate_words(data) {
+      wordCounts={}
 
 filteredData = data.filter(function(d) {
   return d.year ===  selectedYear.toString();
@@ -471,10 +476,9 @@ filteredData.forEach(function(d) {
   wordCounts[keyIndustry] += usdValue;
 });
 
-var words = Object.keys(wordCounts).map(function(key) {
+return Object.keys(wordCounts).map(function(key) {
   return { text: key, size: wordCounts[key] };
 });
-return words
 }
 
 function define_fontSizeScale(words)
@@ -494,16 +498,16 @@ function define_fontSizeScale(words)
 
 }
 
-function draw(words) {
-          // Remove existing word cloud SVG
-          d3.select(wordCloudContainer).select("svg").selectAll("text").remove();
-                  // Compute the maximum and minimum values for font size
-  
-             var fontSizeScale=define_fontSizeScale(words);
+function draw_words() { 
+         // Compute the maximum and minimum values for font size 
+        // console.log("words", words)
+console.log("words2", industry_words[0])
+fontSizeScale=define_fontSizeScale(industry_words);  
+              
 
           // Add the words as text elements
           svg.selectAll("text")
-            .data(words)
+            .data(industry_words)
             .enter()
             .append("text")
             .style("font-size", function(d) { return fontSizeScale(d.size) })
