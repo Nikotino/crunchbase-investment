@@ -1,4 +1,6 @@
 # 2012-2019 Startup Investments by industry
+https://nikotino.github.io/crunchbase-investment/
+
 #### Web app visualizes startup investments by industry for the period of 2012-2019 
 #### Data Source: crunchbase.com, all startup investments above 5K USD for the period of 2012–2019
 
